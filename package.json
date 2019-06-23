@@ -1,0 +1,45 @@
+{
+  "name": "mern_app",
+  "version": "1.0.0",
+  "description": "test mern app",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -w server.js server.js",
+    "build": "webpack --mode development",
+    "watch": "webpack --mode development --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engine:": {
+    "node": "-8.9.4",
+    "npm": "-6.9.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "express": "^4.16.4",
+    "mongodb": "^3.2.6",
+    "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.8",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "bootstrap": "^4.3.1",
+    "css-loader": "^2.1.1",
+    "node-sass": "^4.11.0",
+    "nodemon": "^1.19.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "uglifyjs-webpack-plugin": "^2.1.2",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.0"
+  }
+}
