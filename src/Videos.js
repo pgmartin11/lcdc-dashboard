@@ -18,7 +18,7 @@ class Videos extends Component {
     }
 
     loadData = () => {
-        axios.get('/api/videos')
+        axios.get(`/api/videos${this.props.location.search}`)
             .then((response) => {
                 let contents = response.data.records.map((row) => {
                     let arr = [];
@@ -44,7 +44,7 @@ class Videos extends Component {
 	render() {
 		return (
 			<Card>
-	      		<Card.Header>Subscription Plans</Card.Header>
+	      		<Card.Header>Videos</Card.Header>
 	      		<Card.Body>
 					<MyTable headings={this.state.headings} contents={this.state.contents} />
 				</Card.Body>

@@ -71,7 +71,6 @@ const UploadVideos = () => {
                   <Form.Control as="textarea" rows="3" />
                 </Col>
               </Form.Group>
-
               <Form.Group>
                   <Form.Label htmlFor="fileUpload" style={{ cursor: "pointer" }}>
                       <p>Add file</p>
@@ -84,7 +83,6 @@ const UploadVideos = () => {
                       />
                   </Form.Label>
               </Form.Group>
-
               <Form.Group as={Row} controlId="isFeatured">
                 <Form.Label column sm={2}>
                   Is Featured?

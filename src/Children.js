@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM, { render } from 'react-dom'
+import { Link } from 'react-router-dom'
 import MyTable from './MyTable'
 import Card from 'react-bootstrap/Card'
 import axios from 'axios'
@@ -26,8 +27,7 @@ class Children extends Component {
                     arr.push(row._id);
                     arr.push(row.firstname + ' ' + row.lastname);
                     arr.push(row.alias);
-                    //videos
-                    arr.push('');
+                    arr.push(row.videos.map(id => <Link to={`/videos?id=${id}`}>{id}</Link>));
 
                     return arr;
                 })

@@ -14,9 +14,7 @@ const MyTable = ({headings, contents}) => {
 		    <thead>
 				<tr>
 				{
-					headings.map(heading =>
-						<th key={i++}>{heading}</th>
-					)
+					headings.map(heading => <th key={i++}>{heading}</th>)
 				}
 				</tr>
 		  	</thead>
@@ -24,9 +22,13 @@ const MyTable = ({headings, contents}) => {
 			{
 				contents.map(row => 
 					<tr key={j++}>
-					{ row.map(el => 
-						<td key={k++}>{el}</td>
-					  )
+					{row.map(el => {
+						if (el instanceof Array) {
+							return <td key={k++}>{el.map(arr_el => <div>{arr_el}</div>)}</td>
+						} else {
+							return <td key={k++}>{el}</td>
+						}
+					  })
 					}
 					</tr>
 				)
