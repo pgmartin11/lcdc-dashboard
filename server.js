@@ -26,8 +26,6 @@ app.get('/api/issues', (req, res) => {
 });
 
 app.get('/api/children', (req, res) => {
-	let filter = buildIdFilter(req);
- 
   	MongoClient.connect(url, function(err, client) {
   		let db = client.db('mern-project');
 
@@ -99,8 +97,27 @@ app.get('/api/videos', (req, res) => {
   		let db = client.db('mern-project');
 
  		db.collection('videos').find(filter).toArray().then(videos => {
- 			const metadata = { total_count: videos.length }
- 			res.json({ _metadata: metadata, records: videos })
+ 			db.collection('children').find(filter).toArray().then(children => {
+ 				let videoId_childId = {}
+				
+				children.forEach(child => {
+					child.videos.forEach(video_id => {
+						if (!videoId_childId[video_id]) {
+							videoId_childId[video_id] = [];
+						}
+						videoId_childId[video_id].push(child._id)
+					})
+				})
+
+	 			const metadata = { 
+	 				total_count: videos.length,
+	 				video_child: videoId_childId
+	 			}
+	 			res.json({ _metadata: metadata, records: videos })
+	 		}).catch(error => {
+	 			console.log(error);
+	 			res.status(500).json({ message: `Internal Server Error: ${error}` });
+	 		});
  		}).catch(error => {
  			console.log(error);
  			res.status(500).json({ message: `Internal Server Error: ${error}` });

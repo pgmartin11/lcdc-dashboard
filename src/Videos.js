@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM, { render } from 'react-dom'
+import { Link } from 'react-router-dom'
 import MyTable from './MyTable'
 import Card from 'react-bootstrap/Card'
 import axios from 'axios'
@@ -20,6 +21,8 @@ class Videos extends Component {
     loadData = () => {
         axios.get(`/api/videos${this.props.location.search}`)
             .then((response) => {
+                let videoId_childId = response.data._metadata.video_child;
+
                 let contents = response.data.records.map((row) => {
                     let arr = [];
                     arr.push(row._id);
@@ -28,11 +31,17 @@ class Videos extends Component {
                     arr.push(row.description);
                     arr.push(row.viewing_duration);
 
-                    return arr;
+                    if (videoId_childId[row._id.valueOf()]) {
+                        arr.push(videoId_childId[row._id.valueOf()].map(id => <Link to={`/children?id=${id}`}>{id}</Link>));
+                    } else {
+                        arr.push('');
+                    }
+               
+                    return arr; 
                 })
 
                 this.setState({
-                    headings: ['ID', 'Title', 'Category', 'Description', 'Duration'],
+                    headings: ['ID', 'Title', 'Category', 'Description', 'Duration', 'Associated Child'],
                     contents: contents
                 });
             })
