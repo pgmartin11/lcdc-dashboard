@@ -42,7 +42,6 @@ const NavBar = () => (
 	        <Link to="/videos">Videos</Link>
 	      </li>
 	      <li>
-	        {/* <Link to="/test?foo=bar">Test</Link> */}
 	        <Link to="/test">Test</Link>
 	      </li>
 	    </ul>
