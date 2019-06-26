@@ -21,7 +21,7 @@ class Videos extends Component {
     loadData = () => {
         axios.get(`/api/videos${this.props.location.search}`)
             .then((response) => {
-                let videoId_childId = response.data._metadata.video_child;
+                const {video_child, child_name} = response.data._metadata;
 
                 let contents = response.data.records.map((row) => {
                     let arr = [];
@@ -31,8 +31,8 @@ class Videos extends Component {
                     arr.push(row.description);
                     arr.push(row.viewing_duration);
 
-                    if (videoId_childId[row._id.valueOf()]) {
-                        arr.push(videoId_childId[row._id.valueOf()].map(id => <Link to={`/children?id=${id}`}>{id}</Link>));
+                    if (video_child[row._id.valueOf()]) {
+                        arr.push(video_child[row._id.valueOf()].map(id => <Link to={`/children?id=${id}`}>{child_name[id] ? child_name[id] : id}</Link>));
                     } else {
                         arr.push('');
                     }

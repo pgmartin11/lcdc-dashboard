@@ -27,13 +27,26 @@ app.get('/api/issues', (req, res) => {
 
 app.get('/api/children', (req, res) => {
   	MongoClient.connect(url, function(err, client) {
-  		let db = client.db('mern-project');
-
-  		filter = buildIdFilter(req);
+  		let db = client.db('mern-project'),
+			filter = buildIdFilter(req);
 
  		db.collection('children').find(filter).toArray().then(children => {
- 			const metadata = { total_count: children.length }
- 			res.json({ _metadata: metadata, records: children })
+ 			db.collection('videos').find().toArray().then(videos => {
+ 				let vId_vName = {}
+
+ 				videos.forEach(video => {
+ 					vId_vName[video._id] = video.title;
+ 				})
+
+	 			const metadata = { 
+	 				total_count: children.length,
+	 				video_name: vId_vName
+	 			}
+	 			res.json({ _metadata: metadata, records: children })
+	 		}).catch(error => {
+	 			console.log(error);
+	 			res.status(500).json({ message: `Internal Server Error: ${error}` });
+	 		});
  		}).catch(error => {
  			console.log(error);
  			res.status(500).json({ message: `Internal Server Error: ${error}` });
@@ -91,14 +104,14 @@ app.get('/api/children/videos/:videoId', (req, res) => {
  */
 
 app.get('/api/videos', (req, res) => {
-	let filter = buildIdFilter(req);
-
   	MongoClient.connect(url, function(err, client) {
-  		let db = client.db('mern-project');
+  		let db = client.db('mern-project'),
+  			filter = buildIdFilter(req);
 
  		db.collection('videos').find(filter).toArray().then(videos => {
- 			db.collection('children').find(filter).toArray().then(children => {
- 				let videoId_childId = {}
+ 			db.collection('children').find().toArray().then(children => {
+ 				let videoId_childId = {},
+ 					childId_name = {};
 				
 				children.forEach(child => {
 					child.videos.forEach(video_id => {
@@ -107,11 +120,13 @@ app.get('/api/videos', (req, res) => {
 						}
 						videoId_childId[video_id].push(child._id)
 					})
+					childId_name[child._id] = `${child.firstname} ${child.lastname}`;
 				})
 
 	 			const metadata = { 
 	 				total_count: videos.length,
-	 				video_child: videoId_childId
+	 				video_child: videoId_childId,
+	 				child_name: childId_name
 	 			}
 	 			res.json({ _metadata: metadata, records: videos })
 	 		}).catch(error => {

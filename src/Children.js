@@ -22,12 +22,14 @@ class Children extends Component {
     loadData = () => {
         axios.get(`/api/children${this.props.location.search}`)
             .then((response) => {
+                const {video_name} = response.data._metadata;
+
                 let contents = response.data.records.map((row) => {
                     let arr = [];
                     arr.push(row._id);
-                    arr.push(row.firstname + ' ' + row.lastname);
+                    arr.push(`${row.firstname} ${row.lastname}`);
                     arr.push(row.alias);
-                    arr.push(row.videos.map(id => <Link to={`/videos?id=${id}`}>{id}</Link>));
+                    arr.push(row.videos.map(id => <Link to={`/videos?id=${id}`}>{video_name[id] ? video_name[id] : id}</Link>));
 
                     return arr;
                 })
