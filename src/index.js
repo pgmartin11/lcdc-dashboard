@@ -41,9 +41,6 @@ const NavBar = () => (
 	      <li>
 	        <Link to="/videos">Videos</Link>
 	      </li>
-	      <li>
-	        <Link to="/test">Test</Link>
-	      </li>
 	    </ul>
     </nav>
 )
@@ -65,7 +62,6 @@ const RoutedApp = () => (
 					<Route path="/children" component={Children} />	
 					<Route path="/videos" component={Videos} />
 					{/* <Route path="/test" component={withRouter(TestPage)} /> */}
-					<Route path="/test" component={TestPage} />
 					<Route path="*" component={NoMatch} />
 				</Switch>
 			</div>
