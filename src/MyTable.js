@@ -13,9 +13,7 @@ const MyTable = ({headings, contents}) => {
 		<Table striped bordered hover>
 		    <thead>
 				<tr>
-				{
-					headings.map(heading => <th key={i++}>{heading}</th>)
-				}
+					{ headings.map(heading => <th key={i++}>{heading}</th>) }
 				</tr>
 		  	</thead>
 		  	<tbody>
