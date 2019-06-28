@@ -1,6 +1,6 @@
-const { MongoClient } = require('mongodb');
-const { ObjectId } = require('mongodb');
-const { buildIdFilter } = require('../utilities/utilities');
+const { MongoClient } = require('mongodb')
+const { ObjectId } = require('mongodb')
+const { buildIdFilter } = require('../utilities/utilities')
 
 const url = 'mongodb://localhost';
 

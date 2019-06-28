@@ -2,19 +2,15 @@ const express = require('express')
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
 
-const ctrlChildren = require('./controllers/children');
-const ctrlVideos = require('./controllers/videos');
-
 const app = express(),
 	port = 3000;
 
 const url = 'mongodb://localhost';
 
-app.use(express.static('static'));
+app.use(express.static('public'));
 
-app.get('/api/children', ctrlChildren.list);
-
-app.get('/api/videos', ctrlVideos.list);
+// routes
+app.use(require('./routes/routes'));
 
 app.listen(port, () => {
 	console.log(`App started on port ${port}!`)
