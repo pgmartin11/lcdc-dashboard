@@ -41,6 +41,22 @@ const list = (req, res) => {
 	}); 
 }
 
+const items =  (req, res) => {
+  	MongoClient.connect(url, function(err, client) {
+  		let db = client.db('mern-project');
+
+ 		db.collection('videos').find().toArray().then(videos => {
+ 			const metadata = { 
+ 				total_count: videos.length,
+ 			}
+ 			res.json({ _metadata: metadata, list: videos })
+ 		}).catch(error => {
+ 			console.log(error);
+ 			res.status(500).json({ message: `Internal Server Error: ${error}` });
+ 		});
+	}); 
+}
+
 //app.get('/api/videos/:videoId', (req, res) => {
 //app.get('/api/videos/(:videoId)*', (req, res) => {
 /*
@@ -58,4 +74,4 @@ const list = (req, res) => {
 });
  */
 
-module.exports = { list }
+module.exports = { list, items }

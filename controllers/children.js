@@ -33,6 +33,22 @@ const list = (req, res) => {
 	}); 
 }
 
+const items =  (req, res) => {
+  	MongoClient.connect(url, function(err, client) {
+  		let db = client.db('mern-project');
+
+ 		db.collection('children').find().toArray().then(children => {
+ 			const metadata = { 
+ 				total_count: children.length,
+ 			}
+ 			res.json({ _metadata: metadata, list: children })
+ 		}).catch(error => {
+ 			console.log(error);
+ 			res.status(500).json({ message: `Internal Server Error: ${error}` });
+ 		});
+	}); 
+}
+
 /*
  * these next 2 are correct
 
@@ -65,4 +81,4 @@ app.get('/api/children/videos/:videoId', (req, res) => {
 });
 */
 
-module.exports = { list }
+module.exports = { list, items }

@@ -11,7 +11,8 @@ class Children extends Component {
         super(props);
         this.state = { 
             headings: [],
-            contents: []
+            contents: [],
+            list: []
          }
     }
 
@@ -21,12 +22,15 @@ class Children extends Component {
 
     loadData = () => {
         axios.get(`/api/children${this.props.location.search}`)
-            .then((response) => {
+            .then(response => {
                 const {video_name} = response.data._metadata;
 
                 let contents = response.data.records.map((row) => {
                     let arr = [];
+
+                    //arr.push(row._id.substr(-4));
                     arr.push(row._id);
+
                     arr.push(`${row.firstname} ${row.lastname}`);
                     arr.push(row.alias);
                     arr.push(row.videos.map(id => <Link to={`/videos?id=${id}`}>{video_name[id] ? video_name[id] : id}</Link>));
@@ -34,12 +38,20 @@ class Children extends Component {
                     return arr;
                 })
 
-                this.setState({
-                    headings: ['ID', 'Name', 'Alias', 'Videos'],
-                    contents: contents
-                });
+                axios.get('/api/children/items')
+                    .then(response => {
+
+                        this.setState({
+                            headings: ['ID', 'Name', 'Alias', 'Videos'],
+                            contents,
+                            list: response.data.list
+                        });
+                    })
+                    .catch(error => {
+                        // handle error
+                    });              
             })
-            .catch((error) => {
+            .catch(error => {
                 // handle error
             });
     }

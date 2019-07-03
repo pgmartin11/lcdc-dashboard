@@ -3,6 +3,7 @@ import ReactDOM, { render } from 'react-dom'
 import { Link } from 'react-router-dom'
 import MyTable from './MyTable'
 import Card from 'react-bootstrap/Card'
+import MultiSelect from "@khanacademy/react-multi-select";
 import axios from 'axios'
 
 class Videos extends Component {
@@ -10,22 +11,35 @@ class Videos extends Component {
         super(props);
         this.state = { 
             headings: [],
-            contents: []
+            contents: [],
+            list: [],
+            selected: []
          }
     }
 
     componentDidMount() {
-        this.loadData();
+        this.loadData(this.props.location.search);
     }
 
-    loadData = () => {
-        axios.get(`/api/videos${this.props.location.search}`)
+    activateFilter = () => {
+        const { selected } = this.state;
+        let params;
+        if (selected) {
+            params = selected.map(param => ('id=' + encodeURIComponent(param))).join('&');
+        }
+
+        this.loadData(`?${params}`);
+    }
+
+    loadData = (filterParams) => {
+        axios.get(`/api/videos${filterParams}`)
             .then((response) => {
                 const {video_child, child_name} = response.data._metadata;
 
                 let contents = response.data.records.map((row) => {
                     let arr = [];
-                    arr.push(row._id);
+
+                    arr.push(row._id.substr(-4));
                     arr.push(row.title);
                     arr.push(row.category);
                     arr.push(row.description);
@@ -40,10 +54,22 @@ class Videos extends Component {
                     return arr; 
                 })
 
-                this.setState({
-                    headings: ['ID', 'Title', 'Category', 'Description', 'Duration', 'Associated Child'],
-                    contents: contents
-                });
+                axios.get('/api/videos/items')
+                    .then(response => {
+                        const list = response.data.list,
+                            selected = filterParams.match(/[a-f\d]{24}/ig);
+
+                        this.setState({
+                            headings: ['ID', 'Title', 'Category', 'Description', 'Duration', 'Associated Child'],
+                            contents,
+                            list,
+                            selected: selected ? selected : []
+                        });
+                    })
+                    .catch(error => {
+                        // handle error
+                        console.log('Error!!');
+                    }); 
             })
             .catch((error) => {
                 // handle error
@@ -51,12 +77,21 @@ class Videos extends Component {
     }
 
 	render() {
+        const { list, selected } = this.state;
+        
 		return (
 			<Card>
 	      		<Card.Header>Videos</Card.Header>
 	      		<Card.Body>
+                    Videos:
+                    <MultiSelect
+                        options={list.map(video => ({label:video.title, value:video._id}))}
+                        selected={selected}
+                        onSelectedChanged={selected => this.setState({selected})}
+                    />
+                    <button type="button" onClick={this.activateFilter}>Activate Filter</button>
 					<MyTable headings={this.state.headings} contents={this.state.contents} />
-				</Card.Body>
+                </Card.Body>
 			</Card>
 		)
 	}
