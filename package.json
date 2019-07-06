@@ -24,7 +24,8 @@
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.8",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.0.0"
+    "react-router-dom": "^5.0.0",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",

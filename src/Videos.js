@@ -3,8 +3,11 @@ import ReactDOM, { render } from 'react-dom'
 import { Link } from 'react-router-dom'
 import MyTable from './MyTable'
 import Card from 'react-bootstrap/Card'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import MultiSelect from "@khanacademy/react-multi-select";
 import axios from 'axios'
+
 
 class Videos extends Component {
     constructor(props) {
@@ -21,11 +24,11 @@ class Videos extends Component {
         this.loadData(this.props.location.search);
     }
 
-    activateFilter = () => {
+    applyFilter = () => {
         const { selected } = this.state;
         let params;
         if (selected) {
-            params = selected.map(param => ('id=' + encodeURIComponent(param))).join('&');
+            params = selected.map(param => (`id=${encodeURIComponent(param)}`)).join('&');
         }
 
         this.loadData(`?${params}`);
@@ -68,11 +71,12 @@ class Videos extends Component {
                     })
                     .catch(error => {
                         // handle error
-                        console.log('Error!!');
+                        console.log(error);
                     }); 
             })
             .catch((error) => {
                 // handle error
+                console.log(error);
             });
     }
 
@@ -84,13 +88,19 @@ class Videos extends Component {
 	      		<Card.Header>Videos</Card.Header>
 	      		<Card.Body>
                     Videos:
-                    <MultiSelect
-                        options={list.map(video => ({label:video.title, value:video._id}))}
-                        selected={selected}
-                        onSelectedChanged={selected => this.setState({selected})}
-                    />
-                    <button type="button" onClick={this.activateFilter}>Activate Filter</button>
-					<MyTable headings={this.state.headings} contents={this.state.contents} />
+                    <Row>
+                        <Col>
+                            <MultiSelect
+                                options={list.map(video => ({label:video.title, value:video._id}))}
+                                selected={selected}
+                                onSelectedChanged={selected => this.setState({selected})}
+                            />
+                        </Col>
+                        <Col>
+                            <button type="button" onClick={this.applyFilter}>Activate Filter</button>
+    					</Col>
+                    </Row>
+                    <MyTable headings={this.state.headings} contents={this.state.contents} />
                 </Card.Body>
 			</Card>
 		)
