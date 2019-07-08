@@ -11,3 +11,7 @@ db.videos.find({_id:ObjectId("5cf7230ff5a2fbfaff8db6b6")},{_id:1}).valueOf();
 db.children.find({_id:{$in:[ObjectId("5d0690c6866c4f818f835747"),ObjectId("5d0690c6866c4f818f835746")]}}).pretty()
 
 db.children.find({videos: {$in:["5d0690c6866c4f818f835743", "5d0690c6866c4f818f835744"]}}).pretty()
+
+db.children.find({age:{$gte:10,$lt:40}}).pretty();
+
+db.children.find({age:{$gte:10,$lte:45},has_umvelt:true}).pretty()

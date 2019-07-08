@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM, { render } from 'react-dom'
 import { Link } from 'react-router-dom'
 import MyTable from './MyTable'
+import Form from 'react-bootstrap/Form'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -15,6 +16,9 @@ class Children extends Component {
         this.state = { 
             headings: [],
             contents: [],
+            age_lower: '',
+            age_upper: '',
+            hasUmvelt: false,
             list: [],
             selected: []
          }
@@ -24,14 +28,71 @@ class Children extends Component {
         this.loadData(this.props.location.search);
     }
 
+    handleAgeFilter = (e) => {
+        const ageField = e.target.name,
+            ageString = e.target.value;
+
+        if (ageString.match(/^\d*$/)) {
+            let currentState = this.state;
+
+            currentState[ageField] = ageString;
+            this.setState({ currentState });
+        }
+    }
+
+    handleUmvelt = (e) => {
+        this.setState({ hasUmvelt: e.target.checked });
+    }
+
     applyFilter = () => {
-        const { selected } = this.state;
-        let params;
+        const { selected, age_lower, age_upper, hasUmvelt } = this.state;
+        let queryString,
+            childQuery = '',
+            ageFilter = {},
+            ageQuery = '',
+            umveltQuery = '';
+
         if (selected) {
-            params = selected.map(param => (`id=${encodeURIComponent(param)}`)).join('&');
+            childQuery = selected.map(param => (`id=${encodeURIComponent(param)}`)).join('&');
         }
 
-        this.loadData(`?${params}`);
+        if (age_lower){
+            ageFilter.age_lower = age_lower;
+        }
+        if (age_upper){
+            ageFilter.age_upper = age_upper;
+        }
+        if (age_lower || age_upper) {
+            ageQuery = new URLSearchParams(ageFilter).toString();
+        }
+
+        if (hasUmvelt) {
+            umveltQuery = 'hasUmvelt=true';
+        }
+
+        // build up the query parameters
+        queryString = childQuery;
+
+        if (ageQuery) {
+            queryString = queryString ? queryString.concat(`&${ageQuery}`) : ageQuery;
+        }
+        
+        if (umveltQuery) {
+            queryString = queryString ? queryString.concat(`&${umveltQuery}`) : umveltQuery;
+        }
+
+        this.loadData(`?${queryString}`);
+
+
+        // reset the page query string this way instead? Will need to use lifecyle
+        // method like didReceiveProps to force a rerender
+/*
+        let query = {status: 'Open'}
+        this.props.history.push({
+            pathname: this.props.location.pathname
+            search: '?' + new URLSearchParams(query).toString()
+        });
+ */
     }
 
     loadData = (filterParams) => {
@@ -44,6 +105,7 @@ class Children extends Component {
 
                     arr.push(row._id.substr(-4));
                     arr.push(`${row.firstname} ${row.lastname}`);
+                    arr.push(row.age);
                     arr.push(row.alias);
                     arr.push(row.videos.map(id => <Link to={`/videos?id=${id}`}>{video_name[id] ? video_name[id] : id}</Link>));
 
@@ -56,7 +118,7 @@ class Children extends Component {
                             selected = filterParams.match(/[a-f\d]{24}/ig);                        
 
                         this.setState({
-                            headings: ['ID', 'Name', 'Alias', 'Videos'],
+                            headings: ['ID', 'Name', 'Age', 'Alias', 'Videos'],
                             contents,
                             list,
                             selected: selected ? selected : []
@@ -74,7 +136,7 @@ class Children extends Component {
     }
 
     render() {
-        const { list, selected } = this.state;
+        const { list, selected, age_lower, age_upper, hasUmvelt } = this.state;
 
 		return (
 			<Card>
@@ -87,6 +149,22 @@ class Children extends Component {
                                 options={list.map(child => ({label:`${child.firstname} ${child.lastname}`, value:child._id}))}
                                 selected={selected}
                                 onSelectedChanged={selected => this.setState({selected})}
+                            />
+                        </Col>
+                        <Col>
+                            {/* Age <Form.Control type="input" placeholder="" /> */}
+                            Age between: 
+                            <input name="age_lower" value={age_lower} onChange={this.handleAgeFilter}/>
+                             - 
+                            <input name="age_upper" value={age_upper} onChange={this.handleAgeFilter}/>
+                        </Col>
+                        <Col>
+                            <Form.Check 
+                                type="checkbox"
+                                id="child-is-umvelt"
+                                label="Umvelt"
+                                checked={hasUmvelt}
+                                onClick={this.handleUmvelt}
                             />
                         </Col>
                         <Col>

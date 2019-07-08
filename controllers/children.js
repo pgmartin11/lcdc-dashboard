@@ -7,7 +7,31 @@ const url = 'mongodb://localhost';
 const list = (req, res) => {
   	MongoClient.connect(url, function(err, client) {
   		let db = client.db('mern-project'),
-			filter = buildIdFilter(req);
+			filter = buildIdFilter(req),
+			ageFilter = {},
+			umveltFilter = {};
+
+			if (req.query.age_lower || req.query.age_upper) {
+				ageFilter.age = {};				
+			}
+			if (req.query.age_lower) {
+				ageFilter.age.$gte = parseInt(req.query.age_lower, 10);	
+			}
+			if (req.query.age_upper) {
+				ageFilter.age.$lte = parseInt(req.query.age_upper, 10);
+			}
+
+			if (req.query.hasUmvelt) {
+				umveltFilter.has_umvelt = req.query.hasUmvelt.toLowerCase() == 'true';
+			}
+
+			if (Object.keys(ageFilter).length) {
+				filter = Object.assign(filter, ageFilter);	
+			}
+
+			if (Object.keys(umveltFilter).length) {
+				filter = Object.assign(filter, umveltFilter);
+			}
 
  		db.collection('children').find(filter).toArray().then(children => {
  			db.collection('videos').find().toArray().then(videos => {
