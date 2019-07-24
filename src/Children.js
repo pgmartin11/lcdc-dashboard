@@ -28,6 +28,12 @@ class Children extends Component {
         this.loadData(this.props.location.search);
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.location.search !== prevProps.location.search) {
+            this.loadData(this.props.location.search);
+        }
+    }
+
     handleAgeFilter = (e) => {
         const ageField = e.target.name,
             ageString = e.target.value;
@@ -81,18 +87,10 @@ class Children extends Component {
             queryString = queryString ? queryString.concat(`&${umveltQuery}`) : umveltQuery;
         }
 
-        this.loadData(`?${queryString}`);
-
-
-        // reset the page query string this way instead? Will need to use lifecyle
-        // method like didReceiveProps to force a rerender
-/*
-        let query = {status: 'Open'}
         this.props.history.push({
-            pathname: this.props.location.pathname
-            search: '?' + new URLSearchParams(query).toString()
+            pathname: this.props.location.pathname,
+            search: `?${queryString}`
         });
- */
     }
 
     loadData = (filterParams) => {

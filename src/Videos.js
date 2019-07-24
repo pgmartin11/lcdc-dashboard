@@ -24,6 +24,12 @@ class Videos extends Component {
         this.loadData(this.props.location.search);
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.location.search !== prevProps.location.search) {
+            this.loadData(this.props.location.search);
+        }
+    }
+
     applyFilter = () => {
         const { selected } = this.state;
         let params;
@@ -31,7 +37,10 @@ class Videos extends Component {
             params = selected.map(param => (`id=${encodeURIComponent(param)}`)).join('&');
         }
 
-        this.loadData(`?${params}`);
+        this.props.history.push({
+            pathname: this.props.location.pathname,
+            search: `?${params}`
+        });
     }
 
     loadData = (filterParams) => {
