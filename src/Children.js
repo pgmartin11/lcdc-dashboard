@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM, { render } from 'react-dom'
 import { Link } from 'react-router-dom'
 import MyTable from './MyTable'
+import ChildFilter from './ChildFilter'
 import Form from 'react-bootstrap/Form'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
@@ -16,11 +17,7 @@ class Children extends Component {
         this.state = { 
             headings: [],
             contents: [],
-            age_lower: '',
-            age_upper: '',
-            hasUmvelt: false,
-            list: [],
-            selected: []
+            childList: [],
          }
     }
 
@@ -34,59 +31,7 @@ class Children extends Component {
         }
     }
 
-    handleAgeFilter = (e) => {
-        const ageField = e.target.name,
-            ageString = e.target.value;
-
-        if (ageString.match(/^\d*$/)) {
-            let currentState = this.state;
-
-            currentState[ageField] = ageString;
-            this.setState({ currentState });
-        }
-    }
-
-    handleUmvelt = (e) => {
-        this.setState({ hasUmvelt: e.target.checked });
-    }
-
-    applyFilter = () => {
-        const { selected, age_lower, age_upper, hasUmvelt } = this.state;
-        let queryString,
-            childQuery = '',
-            ageFilter = {},
-            ageQuery = '',
-            umveltQuery = '';
-
-        if (selected) {
-            childQuery = selected.map(param => (`id=${encodeURIComponent(param)}`)).join('&');
-        }
-
-        if (age_lower){
-            ageFilter.age_lower = age_lower;
-        }
-        if (age_upper){
-            ageFilter.age_upper = age_upper;
-        }
-        if (age_lower || age_upper) {
-            ageQuery = new URLSearchParams(ageFilter).toString();
-        }
-
-        if (hasUmvelt) {
-            umveltQuery = 'hasUmvelt=true';
-        }
-
-        // build up the query parameters
-        queryString = childQuery;
-
-        if (ageQuery) {
-            queryString = queryString ? queryString.concat(`&${ageQuery}`) : ageQuery;
-        }
-        
-        if (umveltQuery) {
-            queryString = queryString ? queryString.concat(`&${umveltQuery}`) : umveltQuery;
-        }
-
+    filterHandler = (queryString) => {
         this.props.history.push({
             pathname: this.props.location.pathname,
             search: `?${queryString}`
@@ -112,13 +57,13 @@ class Children extends Component {
 
                 axios.get('/api/children/items')
                     .then(response => {
-                       const list = response.data.list,
+                       const childList = response.data.list,
                             selected = filterParams.match(/[a-f\d]{24}/ig);                        
 
                         this.setState({
                             headings: ['ID', 'Name', 'Age', 'Alias', 'Videos'],
                             contents,
-                            list,
+                            childList,
                             selected: selected ? selected : []
                         });
                     })
@@ -134,41 +79,34 @@ class Children extends Component {
     }
 
     render() {
-        const { list, selected, age_lower, age_upper, hasUmvelt } = this.state;
+        const { childList } = this.state;
+
+        // build up filter prop
+        let searchParams =  new URLSearchParams(this.props.location.search),
+            currentFilter = {};
+
+        if (searchParams.has('id')) {
+            currentFilter.childIds = searchParams.getAll('id');
+        }
+        if (searchParams.has('age_lower')) {
+            currentFilter.age_lower = searchParams.getAll('age_lower')[0];
+        }
+        if (searchParams.has('age_upper')) {
+            currentFilter.age_upper = searchParams.getAll('age_upper')[0];
+        }
+        if (searchParams.has('hasUmvelt')) {
+            currentFilter.hasUmvelt = true;
+        }
 
 		return (
 			<Card>
 	      		<Card.Header>Children</Card.Header>
 	      		<Card.Body>
-                    Children:
-                    <Row>
-                        <Col>
-                            <MultiSelect
-                                options={list.map(child => ({label:`${child.firstname} ${child.lastname}`, value:child._id}))}
-                                selected={selected}
-                                onSelectedChanged={selected => this.setState({selected})}
-                            />
-                        </Col>
-                        <Col>
-                            {/* Age <Form.Control type="input" placeholder="" /> */}
-                            Age between: 
-                            <input name="age_lower" value={age_lower} onChange={this.handleAgeFilter}/>
-                             - 
-                            <input name="age_upper" value={age_upper} onChange={this.handleAgeFilter}/>
-                        </Col>
-                        <Col>
-                            <Form.Check 
-                                type="checkbox"
-                                id="child-is-umvelt"
-                                label="Umvelt"
-                                checked={hasUmvelt}
-                                onClick={this.handleUmvelt}
-                            />
-                        </Col>
-                        <Col>
-                            <button type="button" onClick={this.applyFilter}>Activate Filter</button>
-                        </Col>
-                    </Row>					
+                    <ChildFilter 
+                        childList={childList}
+                        currentFilter={currentFilter}
+                        filterHandler={this.filterHandler}
+                    />				
                     <MyTable headings={this.state.headings} contents={this.state.contents} />
 				</Card.Body>
 			</Card>
