@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM, { render } from 'react-dom'
 import { Link } from 'react-router-dom'
 import MyTable from './MyTable'
+import VideoFilter from './VideoFilter'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -15,8 +16,7 @@ class Videos extends Component {
         this.state = { 
             headings: [],
             contents: [],
-            list: [],
-            selected: []
+            videoList: []
          }
     }
 
@@ -30,6 +30,14 @@ class Videos extends Component {
         }
     }
 
+    filterHandler = (queryString) => {
+        this.props.history.push({
+            pathname: this.props.location.pathname,
+            search: `?${queryString}`
+        });
+    }
+
+/*** this gets removed ***/
     applyFilter = () => {
         const { selected } = this.state;
         let params;
@@ -42,6 +50,7 @@ class Videos extends Component {
             search: `?${params}`
         });
     }
+/************************/
 
     loadData = (filterParams) => {
         axios.get(`/api/videos${filterParams}`)
@@ -68,13 +77,13 @@ class Videos extends Component {
 
                 axios.get('/api/videos/items')
                     .then(response => {
-                        const list = response.data.list,
+                        const videoList = response.data.list,
                             selected = filterParams.match(/[a-f\d]{24}/ig);
 
                         this.setState({
                             headings: ['ID', 'Title', 'Category', 'Description', 'Duration', 'Associated Child'],
                             contents,
-                            list,
+                            videoList,
                             selected: selected ? selected : []
                         });
                     })
@@ -90,25 +99,24 @@ class Videos extends Component {
     }
 
 	render() {
-        const { list, selected } = this.state;
+        const { videoList } = this.state;
+
+        let searchParams =  new URLSearchParams(this.props.location.search),
+            currentFilter = {};
+
+        if (searchParams.has('id')) {
+            currentFilter.videoIds = searchParams.getAll('id');
+        }
         
 		return (
 			<Card>
 	      		<Card.Header>Videos</Card.Header>
 	      		<Card.Body>
-                    Videos:
-                    <Row>
-                        <Col>
-                            <MultiSelect
-                                options={list.map(video => ({label:video.title, value:video._id}))}
-                                selected={selected}
-                                onSelectedChanged={selected => this.setState({selected})}
-                            />
-                        </Col>
-                        <Col>
-                            <button type="button" onClick={this.applyFilter}>Activate Filter</button>
-    					</Col>
-                    </Row>
+                    <VideoFilter
+                        videoList={videoList}
+                        currentFilter={currentFilter}
+                        filterHandler={this.filterHandler}
+                    />
                     <MyTable headings={this.state.headings} contents={this.state.contents} />
                 </Card.Body>
 			</Card>
