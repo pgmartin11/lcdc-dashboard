@@ -14,7 +14,6 @@ class ChildFilter extends Component {
             age_lower: '',
             age_upper: '',
             hasUmvelt: false,
-            list: [],
             selected: [],
             filterChanged: false
          }
@@ -24,10 +23,10 @@ class ChildFilter extends Component {
         const { currentFilter } = this.props;
 
         this.setState({
-            age_lower: currentFilter.age_lower ? currentFilter.age_lower : '',
-            age_upper: currentFilter.age_upper ? currentFilter.age_upper : '',
-            hasUmvelt: currentFilter.hasUmvelt ? currentFilter.hasUmvelt : false,
-            selected: currentFilter.childIds ? currentFilter.childIds : []
+            age_lower: currentFilter.hasOwnProperty('age_lower')? currentFilter.age_lower : '',
+            age_upper: currentFilter.hasOwnProperty('age_upper')? currentFilter.age_upper : '',
+            hasUmvelt: currentFilter.hasOwnProperty('hasUmvelt') ? currentFilter.hasUmvelt : false,
+            selected: currentFilter.hasOwnProperty('childIds') ? currentFilter.childIds : []
         });
 
     }
@@ -37,10 +36,10 @@ class ChildFilter extends Component {
 
         if (prevProps.currentFilter != currentFilter) {
             this.setState({
-                age_lower: currentFilter.age_lower ? currentFilter.age_lower : '',
-                age_upper: currentFilter.age_upper ? currentFilter.age_upper : '',
-                hasUmvelt: currentFilter.hasUmvelt ? currentFilter.hasUmvelt : false,
-                selected: currentFilter.childIds ? currentFilter.childIds : [],
+                age_lower: currentFilter.hasOwnProperty('age_lower') ? currentFilter.age_lower : '',
+                age_upper: currentFilter.hasOwnProperty('age_upper') ? currentFilter.age_upper : '',
+                hasUmvelt: currentFilter.hasOwnProperty('hasUmvelt') ? currentFilter.hasUmvelt : false,
+                selected: currentFilter.hasOwnProperty('childIds') ? currentFilter.childIds : [],
                 filterChanged: false
             });       
         }
@@ -76,10 +75,10 @@ class ChildFilter extends Component {
         const { currentFilter } = this.props;
 
         this.setState({
-            age_lower: currentFilter.age_lower ? currentFilter.age_lower : '',
-            age_upper: currentFilter.age_upper ? currentFilter.age_upper : '',
-            hasUmvelt: currentFilter.hasUmvelt ? currentFilter.hasUmvelt : false,
-            selected: currentFilter.childIds ? currentFilter.childIds : [],
+            age_lower: currentFilter.hasOwnProperty('age_lower') ? currentFilter.age_lower : '',
+            age_upper: currentFilter.hasOwnProperty('age_upper') ? currentFilter.age_upper : '',
+            hasUmvelt: currentFilter.hasOwnProperty('hasUmvelt') ? currentFilter.hasUmvelt : false,
+            selected: currentFilter.hasOwnProperty('childIds') ? currentFilter.childIds : [],
             filterChanged: false    
         })
     }
@@ -135,11 +134,10 @@ class ChildFilter extends Component {
 
         return queryString;
     }
+    
     render() {
         const { selected, age_lower, age_upper, hasUmvelt, filterChanged } = this.state,
             { childList } = this.props;
-
-console.log('filterChanged',filterChanged);
 
 		return (
             <div>

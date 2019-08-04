@@ -7,7 +7,6 @@ import Form from 'react-bootstrap/Form'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import MultiSelect from "@khanacademy/react-multi-select";
 import axios from 'axios'
 
 
@@ -57,14 +56,12 @@ class Children extends Component {
 
                 axios.get('/api/children/items')
                     .then(response => {
-                       const childList = response.data.list,
-                            selected = filterParams.match(/[a-f\d]{24}/ig);                        
+                       const childList = response.data.list;
 
                         this.setState({
                             headings: ['ID', 'Name', 'Age', 'Alias', 'Videos'],
                             contents,
-                            childList,
-                            selected: selected ? selected : []
+                            childList
                         });
                     })
                     .catch(error => {
