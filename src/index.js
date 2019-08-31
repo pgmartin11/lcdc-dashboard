@@ -9,6 +9,8 @@ import UploadVideos from './UploadVideos'
 import Children from './Children'
 import Videos from './Videos'
 
+import TestPage from './TestPage'
+
 import 'bootstrap/dist/css/bootstrap.css'
 import './scss/style.scss'
 import './main.css'
@@ -39,6 +41,9 @@ const NavBar = () => (
 	      <li>
 	        <Link to="/videos">Videos</Link>
 	      </li>
+	      <li>
+	        <Link to="/test">Test</Link>
+	      </li>	      
 	    </ul>
     </nav>
 )
@@ -59,6 +64,7 @@ const RoutedApp = () => (
 					<Route path="/subscription" component={Subscription} />
 					<Route path="/children" component={Children} />	
 					<Route path="/videos" component={Videos} />
+					<Route path="/test" component={TestPage} />
 					<Route path="*" component={NoMatch} />
 				</Switch>
 			</div>

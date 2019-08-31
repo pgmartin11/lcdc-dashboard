@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import ReactDOM, { render } from 'react-dom'
 import Form from 'react-bootstrap/Form'
+import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
 import MultiSelect from "@khanacademy/react-multi-select";
 
 
@@ -141,37 +144,50 @@ class ChildFilter extends Component {
 
 		return (
             <div>
-                Children:
                 <Row>
-                    <Col>
-                        <MultiSelect
-                            options={childList.map(child => ({label:`${child.firstname} ${child.lastname}`, value:child._id}))}
-                            selected={selected}
-                            onSelectedChanged={this.handleChildFilter}
-                        />
+                    <Col md={3}>
+                        <Form.Group>
+                            <Form.Label>Children:</Form.Label>
+                            <MultiSelect
+                                options={childList.map(child => ({label:`${child.firstname} ${child.lastname}`, value:child._id}))}
+                                selected={selected}
+                                onSelectedChanged={this.handleChildFilter}
+                            />
+                        </Form.Group>
                     </Col>
-                    <Col>
-                        {/* Age <Form.Control type="input" placeholder="" /> */}
-                        Age between: 
-                        <input name="age_lower" value={age_lower} onChange={this.handleAgeFilter}/>
-                         - 
-                        <input name="age_upper" value={age_upper} onChange={this.handleAgeFilter}/>
+                    <Col md={3}>
+                        <Form.Group>
+                            <Form.Label>Age between:</Form.Label>
+                            <InputGroup>
+                                <Form.Control type="input" name="age_lower" value={age_lower} onChange={this.handleAgeFilter}/>
+                                <InputGroup.Text>-</InputGroup.Text>
+                                <Form.Control type="input" name="age_upper" value={age_upper} onChange={this.handleAgeFilter}/>
+                            </InputGroup>
+                        </Form.Group>                    
                     </Col>
-                    <Col>
-                        <Form.Check 
-                            type="checkbox"
-                            id="child-is-umvelt"
-                            label="Umvelt"
-                            checked={hasUmvelt}
-                            onClick={this.handleUmveltFilter}
-                        />
+                    <Col md={2}>
+                        <Form.Group>
+                            <Form.Label>&nbsp;</Form.Label>
+                            <Form.Check 
+                                type="checkbox"
+                                id="child-is-umvelt"
+                                label="Umvelt"
+                                checked={hasUmvelt}
+                                onClick={this.handleUmveltFilter}
+                            />
+                        </Form.Group>
                     </Col>
-                    <Col>
-                        <button type="button" onClick={this.applyFilter}>Activate Filter</button>
-                        <button type="button" onClick={this.clearFilter}>Clear Filter</button>
-                        <button type="button" onClick={this.resetFilter} disabled={!filterChanged}>Reset</button>
+                    <Col md={4}>
+                        <Form.Group>
+                            <Form.Label>&nbsp;</Form.Label>
+                            <ButtonToolbar>
+                                <Button variant="secondary" size="sm" onClick={this.applyFilter}>Activate Filter</Button>
+                                <Button variant="secondary" size="sm" onClick={this.clearFilter}>Clear Filter</Button>
+                                <Button variant="secondary" size="sm" onClick={this.resetFilter} disabled={!filterChanged}>Reset</Button>
+                            </ButtonToolbar>
+                        </Form.Group>
                     </Col>
-                </Row>					
+                </Row>				
 			</div>
 		)
 	}

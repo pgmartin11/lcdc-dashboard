@@ -4,6 +4,8 @@ import MyTable from './MyTable'
 import Card from 'react-bootstrap/Card'
 import axios from 'axios'
 
+import ReactJWPlayer from 'react-jw-player';
+
 
 class TestPage extends Component {
     constructor(props) {
@@ -15,7 +17,7 @@ class TestPage extends Component {
     }
 
     componentDidMount() {
-        this.loadData();
+        //this.loadData();
     }
 
     loadData = () => {
@@ -49,15 +51,30 @@ class TestPage extends Component {
             pathname: '/subscription',
             search: '?' + new URLSearchParams(query).toString()
         });
+
  */
 
         return (
-            <Card>
-                <Card.Header>Test Data</Card.Header>
-                <Card.Body>
-                    <MyTable headings={this.state.headings} contents={this.state.contents} />
-                </Card.Body>
-            </Card>
+            <div>
+              <ReactJWPlayer
+                playerId='my-first-video'
+                playerScript='https://cdn.jwplayer.com/libraries/MnUfcQHd.js'
+                file='https://content.jwplatform.com/videos/qy5InTEI-YtouDePl.mp4'
+              />
+              {/*
+              <ReactJWPlayer
+                playerId='my-first-video'
+                playerScript='https://cdn.jwplayer.com/libraries/MnUfcQHd.js'
+                playlist='https://cdn.jwplayer.com/v2/playlists/MaD5dWYp'
+              />
+              */}
+               <Card>
+                    <Card.Header>Test Data</Card.Header>
+                    <Card.Body>
+                        <MyTable headings={this.state.headings} contents={this.state.contents} />
+                    </Card.Body>
+                </Card>
+            </div>
         )
     }
 }

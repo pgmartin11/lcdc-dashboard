@@ -9,6 +9,8 @@ import Col from 'react-bootstrap/Col'
 import MultiSelect from "@khanacademy/react-multi-select";
 import axios from 'axios'
 
+import './scss/videos.scss'
+
 
 class Videos extends Component {
     constructor(props) {

@@ -9,6 +9,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import axios from 'axios'
 
+import './scss/children.scss'
+
 
 class Children extends Component {
     constructor(props) {
@@ -103,9 +105,13 @@ class Children extends Component {
                         childList={childList}
                         currentFilter={currentFilter}
                         filterHandler={this.filterHandler}
-                    />				
-                    <MyTable headings={this.state.headings} contents={this.state.contents} />
-				</Card.Body>
+                    />
+                    <Row>
+                        <Col>				
+                            <MyTable headings={this.state.headings} contents={this.state.contents} />
+    				    </Col>
+                    </Row>
+                </Card.Body>
 			</Card>
 		)
 	}

@@ -1,11 +1,12 @@
 import React from 'react'
 import ReactDOM, { render } from 'react-dom'
-
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
+
+import ReactJWPlayer from 'react-jw-player';
 
 const changeHandler = () => {
   //
@@ -13,6 +14,7 @@ const changeHandler = () => {
 
 const UploadVideos = () => {
     return(
+      <React.Fragment>
         <Card>
           <Card.Header>Upload MP4</Card.Header>
           <Card.Body>
@@ -119,6 +121,12 @@ const UploadVideos = () => {
             </Form>
           </Card.Body>
         </Card>
+      <ReactJWPlayer
+        playerId=''
+        playerScript=''
+        playlist=''
+      />
+      </React.Fragment>
   )
 }
 
