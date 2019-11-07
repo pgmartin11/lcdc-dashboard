@@ -6,6 +6,69 @@ import axios from 'axios'
 
 import ReactJWPlayer from 'react-jw-player';
 
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button'
+
+
+class Example extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            show: false
+         }
+    }
+
+  handleClose = () => this.setState({show: false});
+  handleShow = () => this.setState({show: true});
+
+  render() {
+    const { video } = this.props;
+    const { show } = this.state;
+    return (
+        <div>
+          <Button variant="primary" onClick={this.handleShow}>
+            Launch video
+          </Button>
+    {/*
+          <Modal show={show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Video</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{video}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+     */}
+        <Modal show={show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Video</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{this.props.children}</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleClose}>
+                Close
+              </Button>
+            </Modal.Footer>
+        </Modal>
+
+        </div>
+      )
+  }
+}
+
+const VideoPlayerWrapper = ({file}) => {
+    return (
+        <ReactJWPlayer
+            playerId='my-first-video'
+            playerScript='https://cdn.jwplayer.com/libraries/MnUfcQHd.js'
+            file={file}
+        />
+    )
+}
+
 
 class TestPage extends Component {
     constructor(props) {
@@ -54,26 +117,52 @@ class TestPage extends Component {
 
  */
 
+        const vid = <ReactJWPlayer
+                    playerId='my-first-video'
+                    playerScript='https://cdn.jwplayer.com/libraries/MnUfcQHd.js'
+                    file='https://content.jwplatform.com/videos/qy5InTEI-YtouDePl.mp4'
+                />
+
         return (
             <div>
-              <ReactJWPlayer
-                playerId='my-first-video'
-                playerScript='https://cdn.jwplayer.com/libraries/MnUfcQHd.js'
-                file='https://content.jwplatform.com/videos/qy5InTEI-YtouDePl.mp4'
+              <Example>
+                <VideoPlayerWrapper file='https://content.jwplatform.com/videos/qy5InTEI-YtouDePl.mp4' />
+              </Example>
+        {/*
+              <Example video={vid} />
+              <br/>
+              <Example video="video two" />
+              <br/>
+              <Example video={
+                <ReactJWPlayer
+                    playerId='my-first-video'
+                    playerScript='https://cdn.jwplayer.com/libraries/MnUfcQHd.js'
+                    file='https://content.jwplatform.com/videos/qy5InTEI-YtouDePl.mp4'
+                />} 
               />
+         */}
+
               {/*
+                <ReactJWPlayer
+                    playerId='my-first-video'
+                    playerScript='https://cdn.jwplayer.com/libraries/MnUfcQHd.js'
+                    file='https://content.jwplatform.com/videos/qy5InTEI-YtouDePl.mp4'
+                />
+
               <ReactJWPlayer
                 playerId='my-first-video'
                 playerScript='https://cdn.jwplayer.com/libraries/MnUfcQHd.js'
                 playlist='https://cdn.jwplayer.com/v2/playlists/MaD5dWYp'
               />
               */}
+             {/*
                <Card>
                     <Card.Header>Test Data</Card.Header>
                     <Card.Body>
                         <MyTable headings={this.state.headings} contents={this.state.contents} />
                     </Card.Body>
                 </Card>
+             */}
             </div>
         )
     }

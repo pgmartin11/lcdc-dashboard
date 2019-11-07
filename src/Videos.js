@@ -39,21 +39,6 @@ class Videos extends Component {
         });
     }
 
-/*** this gets removed ***/
-    applyFilter = () => {
-        const { selected } = this.state;
-        let params;
-        if (selected) {
-            params = selected.map(param => (`id=${encodeURIComponent(param)}`)).join('&');
-        }
-
-        this.props.history.push({
-            pathname: this.props.location.pathname,
-            search: `?${params}`
-        });
-    }
-/************************/
-
     loadData = (filterParams) => {
         axios.get(`/api/videos${filterParams}`)
             .then((response) => {
