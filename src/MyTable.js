@@ -20,6 +20,7 @@ const MyTable = ({headings, contents}) => {
 			{
 				contents.map(row => 
 					<tr key={j++}>
+				{/* set k for key this way: row.map((el,k) => { */}
 					{row.map(el => {
 						if (el instanceof Array) {
 							return <td key={k++}>{el.map(arr_el => <div>{arr_el}</div>)}</td>

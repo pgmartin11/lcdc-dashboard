@@ -26,8 +26,8 @@ class Example extends Component {
     const { show } = this.state;
     return (
         <div>
-          <Button variant="primary" onClick={this.handleShow}>
-            Launch video
+          <Button variant="primary" size="sm" onClick={this.handleShow}>
+            Play
           </Button>
     {/*
           <Modal show={show} onHide={this.handleClose}>
@@ -41,7 +41,7 @@ class Example extends Component {
               </Button>
             </Modal.Footer>
           </Modal>
-     */}
+      */}
         <Modal show={show} onHide={this.handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Video</Modal.Title>
@@ -128,6 +128,11 @@ class TestPage extends Component {
               <Example>
                 <VideoPlayerWrapper file='https://content.jwplatform.com/videos/qy5InTEI-YtouDePl.mp4' />
               </Example>
+              <br/>
+              <Example>
+                Video Two
+              </Example>
+              <a href="files/Syllabus.pdf" target="_blank">View PDF</a>
         {/*
               <Example video={vid} />
               <br/>

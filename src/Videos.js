@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import MultiSelect from "@khanacademy/react-multi-select";
 import axios from 'axios'
+import VideoModal, { VideoPlayerWrapper } from './VideoPlayer'
 
 import './scss/videos.scss'
 
@@ -58,6 +59,12 @@ class Videos extends Component {
                     } else {
                         arr.push('');
                     }
+
+                    // video
+                    const vid = <VideoModal>
+                                    <VideoPlayerWrapper file='https://content.jwplatform.com/videos/qy5InTEI-YtouDePl.mp4' />
+                                </VideoModal>
+                    arr.push(vid);
                
                     return arr; 
                 })
@@ -68,7 +75,7 @@ class Videos extends Component {
                             selected = filterParams.match(/[a-f\d]{24}/ig);
 
                         this.setState({
-                            headings: ['ID', 'Title', 'Category', 'Description', 'Duration', 'Associated Child'],
+                            headings: ['ID', 'Title', 'Category', 'Description', 'Duration', 'Associated Child', 'Action'],
                             contents,
                             videoList,
                             selected: selected ? selected : []
