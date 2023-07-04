@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 
-import ReactJWPlayer from 'react-jw-player';
+//import ReactJWPlayer from 'react-jw-player';
 
 const changeHandler = () => {
   //

@@ -6,7 +6,7 @@ import VideoFilter from './VideoFilter'
 import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import MultiSelect from "@khanacademy/react-multi-select";
+//import MultiSelect from "@khanacademy/react-multi-select";
 import axios from 'axios'
 import VideoModal, { VideoPlayerWrapper } from './VideoPlayer'
 

@@ -4,7 +4,7 @@ import MyTable from './MyTable'
 import Card from 'react-bootstrap/Card'
 import axios from 'axios'
 
-import ReactJWPlayer from 'react-jw-player';
+//import ReactJWPlayer from 'react-jw-player';
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button'

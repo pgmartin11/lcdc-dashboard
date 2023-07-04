@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
-import MultiSelect from "@khanacademy/react-multi-select";
+//import MultiSelect from "@khanacademy/react-multi-select";
 
 
 class VideoFilter extends Component {
@@ -88,11 +88,13 @@ class VideoFilter extends Component {
                     <Col md={3}>
                         <Form.Group>
                             <Form.Label>Videos:</Form.Label>
+                        {/*
                             <MultiSelect
                                 options={videoList.map(video => ({label:video.title, value:video._id}))}
                                 selected={selected}
                                 onSelectedChanged={this.handleVideoFilter}
                             />
+                          */}
                         </Form.Group>
                     </Col>
                     <Col md={5}></Col>

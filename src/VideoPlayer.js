@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
 import ReactDOM, { render } from 'react-dom'
 import MyTable from './MyTable'
-import ReactJWPlayer from 'react-jw-player';
+//import ReactJWPlayer from 'react-jw-player';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button'
 
 export const VideoPlayerWrapper = ({file}) => {
     return (
-        <ReactJWPlayer
-            playerId='my-first-video'
-            playerScript='https://cdn.jwplayer.com/libraries/MnUfcQHd.js'
-            file={file}
-        />
+        <p>dummy data</p>
     )
 }
 

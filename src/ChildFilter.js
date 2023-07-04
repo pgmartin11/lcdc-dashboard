@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
-import MultiSelect from "@khanacademy/react-multi-select";
+//import MultiSelect from "@khanacademy/react-multi-select";
 
 
 class ChildFilter extends Component {
@@ -148,11 +148,13 @@ class ChildFilter extends Component {
                     <Col md={3}>
                         <Form.Group>
                             <Form.Label>Children:</Form.Label>
+                        {/* 
                             <MultiSelect
                                 options={childList.map(child => ({label:`${child.firstname} ${child.lastname}`, value:child._id}))}
                                 selected={selected}
                                 onSelectedChanged={this.handleChildFilter}
                             />
+                          */}
                         </Form.Group>
                     </Col>
                     <Col md={3}>
